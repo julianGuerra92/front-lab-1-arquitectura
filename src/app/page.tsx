@@ -1,95 +1,198 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from "react";
 import styles from "./page.module.css";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Box, FormControlLabel, Checkbox, Button } from "@mui/material";
+
 export default function Home() {
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [origin, setOrigin] = useState('');
+  const [destination, setDestination] = useState('');
+  const [maxPrice, setMaxPrice] = useState(0);
+
+  const [checkedState, setCheckedState] = useState({
+    origin: false,
+    destination: false,
+    maxPrice: false,
+  });
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setCheckedState((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'origin':
+        setOrigin(value);
+        break;
+      case 'destination':
+        setDestination(value);
+        break;
+      case 'maxPrice':
+        setMaxPrice(parseInt(value));
+        break;
+    }
+  }
+
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <div className={styles.centeredContainer}>
+
+        <h1 style={{ marginBottom: '30px' }}>
+          Search your flight ✈️
+        </h1>
+
+        <div
+          style={{
+            display: "flex",
+            width: "60%",
+            justifyContent: "space-between",
+            marginBottom: "40px",
+          }}
+        >
+          <div>
+            <h2>Start Date:</h2>
+            <DatePicker
+              showIcon
+              selected={startDate}
+              onChange={(date) => setStartDate(date!)}
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+          </div>
+
+          <div>
+            <h2>End Date:</h2>
+            <DatePicker
+              showIcon
+              selected={endDate}
+              onChange={(date) => setEndDate(date!)}
+            />
+          </div>
+
+
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <h2 style={{ marginBottom: '20px', width: "70%" }}>
+          Add Filters 🔍
+        </h2>
+
+        <Box sx={{ display: 'flex', flexDirection: 'row', mb: '20px' }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="origin"
+                checked={checkedState.origin}
+                onChange={handleCheckboxChange}
+                sx={{
+                  color: 'white',
+                  '&.Mui-checked': {
+                    color: 'white',
+                  },
+                }}
+                size="medium"
+              />
+            }
+            label="Origin 🌎"
+            sx={{ marginRight: '50px' }}
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="destination"
+                checked={checkedState.destination}
+                onChange={handleCheckboxChange}
+                sx={{
+                  color: 'white',
+                  '&.Mui-checked': {
+                    color: 'white',
+                  },
+                }}
+                size="medium"
+              />
+            }
+            label="Destination 🌍"
+            sx={{ marginRight: '50px' }}
           />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="maxPrice"
+                checked={checkedState.maxPrice}
+                onChange={handleCheckboxChange}
+                sx={{
+                  color: 'white',
+                  '&.Mui-checked': {
+                    color: 'white',
+                  },
+                }}
+                size="medium"
+              />
+            }
+            label="Max Price 💰"
+            sx={{ marginRight: '50px' }}
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </Box>
+
+        {
+          checkedState.origin ?
+            <input
+              name="origin"
+              type="text"
+              onChange={handleInputChange}
+              placeholder="Enter the origin"
+              className={styles.customInput}
+            /> : <></>
+        }
+
+        {
+          checkedState.destination ?
+            <input
+              name="destination"
+              type="text"
+              onChange={handleInputChange}
+              placeholder="Enter the destination"
+              className={styles.customInput}
+            /> : <></>
+        }
+
+        {
+          checkedState.maxPrice ?
+            <input
+              name="maxPrice"
+              type="number"
+              onChange={handleInputChange}
+              placeholder="Enter max price"
+              className={`${styles.customInput} ${styles.noSpin}`}
+            /> : <></>
+        }
+
+        <Button variant="contained" sx={{width: '50%'}}>
+          Search Flights
+        </Button>
+
+        <div style={{ width: '70%', height: '1px', backgroundColor: 'white', margin: '40px 0' }}></div>
+
+        <h2 style={{ marginBottom: '20px', width: "70%" }}>
+          Avalible Flights 😎
+        </h2>
+
+      </div>
+
+
+
     </div>
   );
 }

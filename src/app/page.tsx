@@ -6,6 +6,9 @@ import styles from "./page.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Box, FormControlLabel, Checkbox, Button } from "@mui/material";
+import { getFlights } from "../api/vuelos-api";
+import { GetFlightsResponse } from "../interface/vuelosApi.interface";
+import { TableFlights } from "../components/table-flights";
 
 export default function Home() {
 
@@ -15,6 +18,8 @@ export default function Home() {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [maxPrice, setMaxPrice] = useState(0);
+
+  const [flights, setFlights] = useState<GetFlightsResponse[]>([]);
 
   const [checkedState, setCheckedState] = useState({
     origin: false,
@@ -28,6 +33,19 @@ export default function Home() {
       ...prevState,
       [name]: checked,
     }));
+    if (!checked) {
+      switch (name) {
+        case 'origin':
+          setOrigin('');
+          break;
+        case 'destination':
+          setDestination('');
+          break;
+        case 'maxPrice':
+          setMaxPrice(0);
+          break;
+      }
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +61,19 @@ export default function Home() {
         setMaxPrice(parseInt(value));
         break;
     }
+  }
+
+  const onClickSearchFlights = async () => {
+    const request = {
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0],
+      origin: origin,
+      destination: destination,
+      maxPrice: maxPrice
+    }
+    const response = await getFlights(request);
+    setFlights(response);
+    console.log(response);
   }
 
   return (
@@ -154,6 +185,7 @@ export default function Home() {
               onChange={handleInputChange}
               placeholder="Enter the origin"
               className={styles.customInput}
+              autoComplete="off"
             /> : <></>
         }
 
@@ -165,6 +197,7 @@ export default function Home() {
               onChange={handleInputChange}
               placeholder="Enter the destination"
               className={styles.customInput}
+              autoComplete="off"
             /> : <></>
         }
 
@@ -176,10 +209,11 @@ export default function Home() {
               onChange={handleInputChange}
               placeholder="Enter max price"
               className={`${styles.customInput} ${styles.noSpin}`}
+              autoComplete="off"
             /> : <></>
         }
 
-        <Button variant="contained" sx={{width: '50%'}}>
+        <Button variant="contained" sx={{ width: '50%' }} onClick={onClickSearchFlights}>
           Search Flights
         </Button>
 
@@ -189,9 +223,11 @@ export default function Home() {
           Avalible Flights 😎
         </h2>
 
+        <div style={{ width: '70%' }}>
+          <TableFlights flights={flights} />
+        </div>
+
       </div>
-
-
 
     </div>
   );

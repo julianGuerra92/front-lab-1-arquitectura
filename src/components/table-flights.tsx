@@ -15,6 +15,9 @@ export const TableFlights = ({ flights }: Props) => {
                   <TableCell sx={{fontWeight: 'bold'}}>Destination</TableCell>
                   <TableCell sx={{fontWeight: 'bold'}}>Date</TableCell>
                   <TableCell sx={{fontWeight: 'bold'}}>Price</TableCell>
+                  <TableCell sx={{fontWeight: 'bold'}}>Baggage type</TableCell>
+                  <TableCell sx={{fontWeight: 'bold'}}>Class type</TableCell>
+                  <TableCell sx={{fontWeight: 'bold'}}>Max. number of passengers</TableCell>
                </TableRow>
             </TableHead>
             <TableBody>
@@ -27,6 +30,9 @@ export const TableFlights = ({ flights }: Props) => {
                      <TableCell>{row.destination}</TableCell>
                      <TableCell>{row.date}</TableCell>
                      <TableCell>{row.price}</TableCell>
+                     <TableCell>{row.baggageType}</TableCell>
+                     <TableCell>{row.classType}</TableCell>
+                     <TableCell>{row.maxNumberPassengers}</TableCell>
                   </TableRow>
                ))}
             </TableBody>

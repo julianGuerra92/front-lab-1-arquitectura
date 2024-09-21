@@ -18,6 +18,9 @@ export default function Home() {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [maxPrice, setMaxPrice] = useState(0);
+  const [baggageType, setBaggageType] = useState('');
+  const [classType, setClassType] = useState('');
+  const [maxNumberPassengers, setMaxNumberPassengers] = useState(0);
 
   const [flights, setFlights] = useState<GetFlightsResponse[]>([]);
 
@@ -25,6 +28,9 @@ export default function Home() {
     origin: false,
     destination: false,
     maxPrice: false,
+    baggageType: false,
+    classType: false,
+    maxNumberPassengers: false,
   });
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +50,15 @@ export default function Home() {
         case 'maxPrice':
           setMaxPrice(0);
           break;
+        case 'baggageType':
+          setBaggageType('');
+          break;
+        case 'classType':
+          setClassType('');
+          break;
+        case 'maxNumberPassengers':
+          setMaxNumberPassengers(0);
+          break;
       }
     }
   };
@@ -60,6 +75,15 @@ export default function Home() {
       case 'maxPrice':
         setMaxPrice(parseInt(value));
         break;
+      case 'baggageType':
+        setBaggageType(value);
+        break;
+      case 'classType':
+        setClassType(value);
+        break;
+      case 'maxNumberPassengers':
+        setMaxNumberPassengers(parseInt(value));
+        break;
     }
   }
 
@@ -69,7 +93,10 @@ export default function Home() {
       endDate: endDate.toISOString().split('T')[0],
       origin: origin,
       destination: destination,
-      maxPrice: maxPrice
+      maxPrice: maxPrice,
+      baggageType: baggageType,
+      classType: classType,
+      maxNumberPassengers: maxNumberPassengers,
     }
     const response = await getFlights(request);
     setFlights(response);
@@ -118,63 +145,124 @@ export default function Home() {
           Add Filters 🔍
         </h2>
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', mb: '20px' }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="origin"
-                checked={checkedState.origin}
-                onChange={handleCheckboxChange}
-                sx={{
-                  color: 'white',
-                  '&.Mui-checked': {
+        <Box sx={{ display: 'flex', flexDirection: 'column', mb: '20px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', mb: '20px' }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="origin"
+                  checked={checkedState.origin}
+                  onChange={handleCheckboxChange}
+                  sx={{
                     color: 'white',
-                  },
-                }}
-                size="medium"
-              />
-            }
-            label="Origin 🌎"
-            sx={{ marginRight: '50px' }}
-          />
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
+                  size="medium"
+                />
+              }
+              label="Origin 🌎"
+              sx={{ marginRight: '50px' }}
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="destination"
-                checked={checkedState.destination}
-                onChange={handleCheckboxChange}
-                sx={{
-                  color: 'white',
-                  '&.Mui-checked': {
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="destination"
+                  checked={checkedState.destination}
+                  onChange={handleCheckboxChange}
+                  sx={{
                     color: 'white',
-                  },
-                }}
-                size="medium"
-              />
-            }
-            label="Destination 🌍"
-            sx={{ marginRight: '50px' }}
-          />
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
+                  size="medium"
+                />
+              }
+              label="Destination 🌍"
+              sx={{ marginRight: '50px' }}
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="maxPrice"
-                checked={checkedState.maxPrice}
-                onChange={handleCheckboxChange}
-                sx={{
-                  color: 'white',
-                  '&.Mui-checked': {
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="maxPrice"
+                  checked={checkedState.maxPrice}
+                  onChange={handleCheckboxChange}
+                  sx={{
                     color: 'white',
-                  },
-                }}
-                size="medium"
-              />
-            }
-            label="Max Price 💰"
-            sx={{ marginRight: '50px' }}
-          />
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
+                  size="medium"
+                />
+              }
+              label="Max Price 💰"
+              sx={{ marginRight: '50px' }}
+            />
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="baggageType"
+                  checked={checkedState.baggageType}
+                  onChange={handleCheckboxChange}
+                  sx={{
+                    color: 'white',
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
+                  size="medium"
+                />
+              }
+              label="Baggage Type 🛄"
+              sx={{ marginRight: '50px' }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="classType"
+                  checked={checkedState.classType}
+                  onChange={handleCheckboxChange}
+                  sx={{
+                    color: 'white',
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
+                  size="medium"
+                />
+              }
+              label="Class Type 🧐"
+              sx={{ marginRight: '50px' }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="maxNumberPassengers"
+                  checked={checkedState.maxNumberPassengers}
+                  onChange={handleCheckboxChange}
+                  sx={{
+                    color: 'white',
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
+                  size="medium"
+                />
+              }
+              label="Max Number Passengers 👥"
+              sx={{ marginRight: '50px' }}
+            />
+          </Box>
         </Box>
 
         {
@@ -213,6 +301,42 @@ export default function Home() {
             /> : <></>
         }
 
+        {
+          checkedState.baggageType ?
+            <input
+              name="baggageType"
+              type="string"
+              onChange={handleInputChange}
+              placeholder="Enter baggage type"
+              className={`${styles.customInput} ${styles.noSpin}`}
+              autoComplete="off"
+            /> : <></>
+        }
+
+        {
+          checkedState.classType ?
+            <input
+              name="classType"
+              type="string"
+              onChange={handleInputChange}
+              placeholder="Enter class type"
+              className={`${styles.customInput} ${styles.noSpin}`}
+              autoComplete="off"
+            /> : <></>
+        }
+
+        {
+          checkedState.maxNumberPassengers ?
+            <input
+              name="maxNumberPassengers"
+              type="number"
+              onChange={handleInputChange}
+              placeholder="Enter max number passengers"
+              className={`${styles.customInput} ${styles.noSpin}`}
+              autoComplete="off"
+            /> : <></>
+        }
+
         <Button variant="contained" sx={{ width: '50%' }} onClick={onClickSearchFlights}>
           Search Flights
         </Button>
@@ -223,7 +347,7 @@ export default function Home() {
           Avalible Flights 😎
         </h2>
 
-        <div style={{ width: '70%' }}>
+        <div style={{ width: '90%' }}>
           <TableFlights flights={flights} />
         </div>
 

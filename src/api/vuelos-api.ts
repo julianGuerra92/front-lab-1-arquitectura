@@ -13,7 +13,16 @@ export const getFlights = async (request: GetFlightsRequest): Promise<GetFlights
       params += `&destination=${request.destination}`;
    }
    if (request.maxPrice && request.maxPrice > 0) {
-      params += `&maxPrice=${request.maxPrice}`;
+      params += `&price=${request.maxPrice}`;
+   }
+   if (request.baggageType && request.baggageType.length > 0) {
+      params += `&baggageType=${request.baggageType}`;
+   }
+   if (request.classType && request.classType.length > 0) {
+      params += `&classType=${request.classType}`;
+   }
+   if (request.maxNumberPassengers && request.maxNumberPassengers > 0) {
+      params += `&maxNumberPassengers=${request.maxNumberPassengers}`;
    }
    const response = await axios.get<GetFlightsResponse[]>(`${baseURL}?${params}`);
    return response.data;

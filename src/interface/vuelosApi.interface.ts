@@ -6,6 +6,9 @@ export interface GetFlightsRequest {
    origin?: string;
    destination?: string;
    maxPrice?: number;
+   baggageType: string;
+   classType: string;
+   maxNumberPassengers: number;
 }
 
 export interface GetFlightsResponse {
@@ -14,4 +17,8 @@ export interface GetFlightsResponse {
    destination: string;
    date:        string;
    price:       number;
+   baggageType: string;
+   classType: string;
+   maxNumberPassengers: number;
+
 }
